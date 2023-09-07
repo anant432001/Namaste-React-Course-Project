@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import RestaurantCard from "./RestaurantCard";
 import { SWIGGY_API } from "../utils/constants";
+import { Link } from "react-router-dom";
 
 const Body = () => {
   const [listOfRestaurants, setListOfRestaurants] = useState([]);
   const [filteredListOfRestaurant, setFilteredListOfRestaurant] = useState([]);
-  const [searchText, setSearchText] = useState("");
+  const [searchText, setSearchText] = useState();
+
+  console.log("filteredListOfRestaurant : " + listOfRestaurants?.length);
 
   // UseEffect's callback fn is called, after the component renders
   useEffect(() => {
@@ -15,6 +18,10 @@ const Body = () => {
   const fetchData = async () => {
     const data = await fetch(SWIGGY_API);
     const jsonData = await data.json();
+    console.log("jsonData:\n" + jsonData);
+    console.log(
+      "Exact Data : " + jsonData.data.cards[2].card.card.gridElements
+    );
     setListOfRestaurants(
       jsonData?.data?.cards[2]?.card?.card?.gridElements?.infoWithStyle
         ?.restaurants
@@ -25,8 +32,8 @@ const Body = () => {
     );
   };
 
-  return listOfRestaurants.length === 0 ? (
-    <h1>Loading...</h1>
+  return filteredListOfRestaurant?.length == 0 ? (
+    <h1>Loading..</h1>
   ) : (
     <div className="body">
       <div className="filter">
@@ -47,30 +54,41 @@ const Body = () => {
           />
           <button
             onClick={() => {
-              const filteredRestaurant = listOfRestaurants.filter((res) =>
+              const filteredRestaurant = listOfRestaurants?.filter((res) =>
                 res.info.name.toLowerCase().includes(searchText.toLowerCase())
               );
               setFilteredListOfRestaurant(filteredRestaurant);
             }}>
             Search
           </button>
+          {console.log("s size:" + listOfRestaurants?.length)}
+          {console.log("f size:" + filteredListOfRestaurant?.length)}
         </div>
         <button
           className="filter-btn"
           onClick={() => {
             // Filter Logic
-            const filteredList = listOfRestaurants.filter(
+            const filteredList = listOfRestaurants?.filter(
               (restaurant) => restaurant.info.avgRating > 4
             );
-            setListOfRestaurants(filteredList);
+            console.log("filteredList : \n" + filteredList);
+            setFilteredListOfRestaurant(filteredList);
           }}>
           Top Rated Restaurants
         </button>
       </div>
       <div className="res-container">
-        {filteredListOfRestaurant.map((restaurant) => (
-          <RestaurantCard key={restaurant.info.id} resData={restaurant} />
+        {console.log("hello1\n")}
+        {console.log("size : " + filteredListOfRestaurant?.length + "\n")}
+
+        {filteredListOfRestaurant?.map((restaurant) => (
+          <Link
+            to={"/restaurants/" + restaurant.info.id}
+            key={restaurant.info.id}>
+            <RestaurantCard resData={restaurant} />
+          </Link>
         ))}
+        {console.log("hello2\n")}
       </div>
     </div>
   );
