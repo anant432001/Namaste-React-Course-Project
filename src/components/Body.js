@@ -7,7 +7,7 @@ import useOnlineStatus from "../utils/useOnlineStatus";
 const Body = () => {
   const [listOfRestaurants, setListOfRestaurants] = useState([]);
   const [filteredListOfRestaurant, setFilteredListOfRestaurant] = useState([]);
-  const [searchText, setSearchText] = useState();
+  const [searchText, setSearchText] = useState("");
 
   // UseEffect's callback fn is called, after the component renders
   useEffect(() => {
@@ -25,6 +25,7 @@ const Body = () => {
       jsonData?.data?.cards[2]?.card?.card?.gridElements?.infoWithStyle
         ?.restaurants
     );
+    console.log(jsonData.data);
   };
   // const onlineStatus = useOnlineStatus();
   if (!useOnlineStatus()) return <h1>You are Offline!</h1>;
@@ -33,11 +34,11 @@ const Body = () => {
     <h1>Loading..</h1>
   ) : (
     <div className="body">
-      <div className="filter">
-        <div className="search">
+      <div>
+        <div className="p-4 m-4 flex space-x-4">
           <input
             type="text"
-            className="search-box"
+            className="border border-solid border-black rounded-lg"
             value={searchText}
             onChange={(e) => {
               setSearchText(e.target.value);
@@ -50,6 +51,7 @@ const Body = () => {
             }}
           />
           <button
+            className="px-4 py-1 mx-2 bg-blue-600 rounded-lg text-sm text-white"
             onClick={() => {
               const filteredRestaurant = listOfRestaurants?.filter((res) =>
                 res.info.name.toLowerCase().includes(searchText.toLowerCase())
@@ -58,20 +60,20 @@ const Body = () => {
             }}>
             Search
           </button>
+          <button
+            className="px-4 py-1 mx-2 bg-blue-600 rounded-lg text-sm text-white"
+            onClick={() => {
+              // Filter Logic
+              const filteredList = listOfRestaurants?.filter(
+                (restaurant) => restaurant.info.avgRating > 4
+              );
+              setFilteredListOfRestaurant(filteredList);
+            }}>
+            Top Rated Restaurants
+          </button>
         </div>
-        <button
-          className="filter-btn"
-          onClick={() => {
-            // Filter Logic
-            const filteredList = listOfRestaurants?.filter(
-              (restaurant) => restaurant.info.avgRating > 4
-            );
-            setFilteredListOfRestaurant(filteredList);
-          }}>
-          Top Rated Restaurants
-        </button>
       </div>
-      <div className="res-container">
+      <div className="flex flex-wrap px-2">
         {filteredListOfRestaurant?.map((restaurant) => (
           <Link
             to={"/restaurants/" + restaurant.info.id}
