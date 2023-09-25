@@ -7,18 +7,17 @@ class UserClass extends React.Component {
       userInfo: {
         name: "",
         login: "",
-        avatar_url: ""
+        avatar_url: "",
       },
-    //   Below would have also worked.
-    //   userInfo: {
-    //   }
+      //   Below would have also worked.
+      //   userInfo: {
+      //   }
     };
   }
 
   async componentDidMount() {
     const data = await fetch("https://api.github.com/users/anant432001");
     const jsonData = await data.json();
-    console.log(jsonData);
     this.setState({
       userInfo: jsonData,
     });
@@ -26,10 +25,16 @@ class UserClass extends React.Component {
 
   render() {
     return (
-      <div className="">
-        <img src={this.state.userInfo.avatar_url}/>
-        <h2>Name : {this.state.userInfo.name}</h2>
-        <h3>UserId : {this.state.userInfo.login}</h3>
+      <div className="my-4 px-4 flex flex-col items-center">
+        <div>
+          <img
+            src={this.state.userInfo.avatar_url}
+            className="rounded-lg w-80"
+          />
+        </div>
+        <div>
+          <h2>{this.state.userInfo.name}</h2>
+        </div>
       </div>
     );
   }

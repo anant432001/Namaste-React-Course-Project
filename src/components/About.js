@@ -1,10 +1,9 @@
 import React from 'react';
-import User from './User';
 import UserClass from './UserClass';
 
 const About = () => {
   return (
-      <UserClass name={"Anant Classic"}/>
+      <UserClass name={"Anant Class"}/>
   )
 }
 

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import RestaurantCard from "./RestaurantCard";
+import HigherOrderComponent from "./HigherOrderComponent";
 import { SWIGGY_API } from "../utils/constants";
 import { Link } from "react-router-dom";
 import useOnlineStatus from "../utils/useOnlineStatus";
@@ -8,6 +9,9 @@ const Body = () => {
   const [listOfRestaurants, setListOfRestaurants] = useState([]);
   const [filteredListOfRestaurant, setFilteredListOfRestaurant] = useState([]);
   const [searchText, setSearchText] = useState("");
+
+  // HigherOrder compenent returns a component
+  const RestaurantCardWithHeader = HigherOrderComponent(RestaurantCard);
 
   // UseEffect's callback fn is called, after the component renders
   useEffect(() => {
@@ -25,12 +29,14 @@ const Body = () => {
       jsonData?.data?.cards[2]?.card?.card?.gridElements?.infoWithStyle
         ?.restaurants
     );
-    console.log(jsonData.data);
+    console.log(filteredListOfRestaurant);
+    console.log(jsonData?.data?.cards[2]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
   };
+
   // const onlineStatus = useOnlineStatus();
   if (!useOnlineStatus()) return <h1>You are Offline!</h1>;
 
-  return filteredListOfRestaurant?.length == 0 ? (
+  return listOfRestaurants?.length == 0 ? (
     <h1>Loading..</h1>
   ) : (
     <div className="body">
@@ -78,7 +84,8 @@ const Body = () => {
           <Link
             to={"/restaurants/" + restaurant.info.id}
             key={restaurant.info.id}>
-            <RestaurantCard resData={restaurant} />
+            <RestaurantCardWithHeader resData={restaurant}/>
+            {/* <RestaurantCard resData={restaurant} /> */}
           </Link>
         ))}
       </div>
