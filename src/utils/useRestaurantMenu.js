@@ -12,6 +12,7 @@ const useRestaurantMenu = (props) => {
   const fetchMenu = async () => {
     const data = await fetch(MENU_API + props);
     const jsonData = await data.json();
+    console.log(jsonData);
     setResInfo(jsonData.data);
   };
   return resInfo;
