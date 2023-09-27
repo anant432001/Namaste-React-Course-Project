@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { clearCart } from "../utils/cartSlice";
 
 const Cart = () => {
+  console.log("Cart Component Rendered!");
   const items = useSelector((store) => store.cart.items);
   const dispatch = useDispatch();
 
