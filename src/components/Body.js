@@ -29,8 +29,6 @@ const Body = () => {
       jsonData?.data?.cards[2]?.card?.card?.gridElements?.infoWithStyle
         ?.restaurants
     );
-    console.log(filteredListOfRestaurant);
-    console.log(jsonData?.data?.cards[2]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
   };
 
   // const onlineStatus = useOnlineStatus();

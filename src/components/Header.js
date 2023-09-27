@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import { LOGO_URL } from "../utils/constants";
 import { Link } from "react-router-dom";
 import useOnlineStatus from "../utils/useOnlineStatus";
+import { useSelector } from "react-redux";
 
 const Header = () => {
   const [btnName, setBtnName] = useState("Login");
   const onlineStatus = useOnlineStatus();
-
+  const cart = useSelector((store) => store.cart.items);
+  console.log("cart : " + cart);
   return (
     <div className="flex justify-between shadow-lg mb-2 text-lg">
       <div className="logo-container">
@@ -24,7 +26,9 @@ const Header = () => {
           <li className="px-4">
             <Link to="/contact">Contact Us</Link>
           </li>
-          <li className="px-4">Cart</li>
+          <li className="px-4">
+            <Link to="/cart">🛒 [{cart.length}]</Link>
+          </li>
           <button
             onClick={() => {
               if (
