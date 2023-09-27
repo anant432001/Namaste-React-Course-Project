@@ -2,6 +2,7 @@ import React from "react";
 import { CDN_URL } from "../utils/constants";
 import { useDispatch } from "react-redux";
 import { addItem } from "../utils/cartSlice";
+import Cart from "./Cart";
 
 const ItemList = ({ items }) => {
   const dispatch = useDispatch();
@@ -9,6 +10,7 @@ const ItemList = ({ items }) => {
     // Dispatch an action
     dispatch(addItem(item));
   };
+
   return (
     <div>
       <ul>
